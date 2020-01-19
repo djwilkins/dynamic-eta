@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="dynETA">
+<head>
+    <title>DynETA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-controller="myCtrl">
+
+    <div id="container">
+            <h1 id="title">DynETA</h1>
+            <button class="button" ng-click="toggleEditMode()">{{ viewObject.editText }}</button>
+            <button class="button"  ng-click="resetTasks()">Reset Tasks</button>
+            <button class="button" ng-click="addTask()" ng-show="viewObject.editMode">+</button>
+            <br><br>
+            <p class="task-callout">{{ currentTaskName }} ({{ viewObject.currentTaskTimer }})</p>
+            <p class="eta">ETA: {{ eta }}</p>
+            <div id="{{$index}}" class="task-container active" ng-repeat="task in tasks" ng-click="toggleTask($index)" ng-hide="viewObject.editMode">
+                {{ task.name }} ({{ task.minutes }} mins)
+            </div>
+            <div ng-repeat="task in tasks" ng-show="viewObject.editMode">
+                <button ng-show="notFirst($index)" ng-click="moveTask($index, 'up')" class="button arrows"> 
+                    &uarr;
+                </button>
+                <button ng-show="notLast($index)" ng-click="moveTask($index, 'down')" class="button arrows"> 
+                    &darr;
+                </button>
+                <input id="text-input-{{$index}}" class="input-text" type="text" ng-model="task.name">
+                <input class="input-time" type="number" ng-model="task.minutes">
+                <span ng-show="viewObject.editMode" ng-click="removeTask($index)" class="delete-icons"> 
+                    X
+                </span>
+            </div>
+
+            <!-- <br>
+            <p class="current-time">TIME: {{ timeNow }}</p> -->
+    </div>
+
+
+    <!-- Putting down in body best practice so has rest of elements in DOM to manipulate. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script>
+    <script src="moment.min.js"></script>
+
+    <!-- My scripts -->
+    <script src="app.js"></script>
+    <script src="controller.js"></script>
+
+</body>
+</html>
