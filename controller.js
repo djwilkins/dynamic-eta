@@ -15,6 +15,8 @@
             ];
         } else {
             $scope.tasks = JSON.parse(localStorage.getItem(localStorageKey));
+            // Reset all values to active
+            $scope.tasks.map((task) => { task.active = true; });
         }
 
         let interval = 1000; // 1 second in milliseconds
