@@ -1,7 +1,7 @@
 # dynamic-eta
 An app to help you dynamically track your eta as you work through your morning routine, other routine or current list of tasks.
 
-Live Demo here: http://djwilkins.net/apps/dynETA/
+Live Demo here: https://djwilkins.github.io/dynamic-eta/
 
 Features:
 * Click on task to toggle to complete or inactive.
