@@ -20,7 +20,7 @@ body, input {
     margin-bottom: 0px;
 }
 
-.button {
+.button, .select {
     font-size: 45px;
 }
 

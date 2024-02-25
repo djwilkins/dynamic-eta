@@ -8,9 +8,10 @@
 
     <div id="container">
             <h1 id="title">DynETA</h1>
-            <button class="button" ng-click="toggleEditMode()">{{ viewObject.editText }}</button>
-            <button class="button"  ng-click="resetTasks()">Reset Tasks</button>
-            <button class="button" ng-click="addTask()" ng-show="viewObject.editMode">+</button>
+            <button id="toggle" class="button" ng-click="toggleEditMode()">{{ viewObject.editText }}</button>
+            <button id="reset" class="button"  ng-click="resetTasks()">Reset Tasks</button>
+            <select id="select" class="select" ng-model="viewObject.currentRoutine" ng-options="x for x in routineOptions" ng-change="selectRoutine()"></select>
+            <button id="add" class="button" ng-click="addTask()" ng-show="viewObject.editMode">+</button>
             <br><br>
             <p class="task-callout">{{ currentTaskName }} ({{ viewObject.currentTaskTimer }})</p>
             <p class="eta">ETA: {{ eta }}</p>

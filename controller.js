@@ -3,21 +3,51 @@
 
         $scope.viewObject = {
             editMode: false,
-            editText: "Edit"
+            editText: "Edit",
+            currentRoutine: ""
         }
 
         const localStorageKey = "djwilkins.net/dynETA";
         if (localStorage.getItem(localStorageKey) === null) {
-            $scope.tasks = [
-                {name:'Task or Habit 1', minutes:5, active:true},
-                {name:'Task or Habit 2', minutes:2, active:true},
-                {name:'Task or Habit 3', minutes:2, active:true}
-            ];
+            $scope.viewObject.currentRoutine = "Weekday01";
+            $scope.routines = {
+                Weekday01:[
+                    {name:'Task or Habit 1', minutes:5, active:true},
+                    {name:'Task or Habit 2', minutes:2, active:true},
+                    {name:'Task or Habit 3', minutes:2, active:true}
+                ],
+                Weekday02:[
+                    {name:'Task or Habit 1', minutes:5, active:true},
+                    {name:'Task or Habit 2', minutes:2, active:true},
+                    {name:'Task or Habit 3', minutes:2, active:true}
+                ],
+                Sat:[
+                    {name:'Task or Habit 1', minutes:5, active:true},
+                    {name:'Task or Habit 2', minutes:2, active:true},
+                    {name:'Task or Habit 3', minutes:2, active:true}
+                ],
+                Sun:[
+                    {name:'Task or Habit 1', minutes:5, active:true},
+                    {name:'Task or Habit 2', minutes:2, active:true},
+                    {name:'Task or Habit 3', minutes:2, active:true}
+                ],
+                Misc:[
+                    {name:'Task or Habit 1', minutes:5, active:true},
+                    {name:'Task or Habit 2', minutes:2, active:true},
+                    {name:'Task or Habit 3', minutes:2, active:true}
+                ]
+            }
+            $scope.tasks = $scope.routines[$scope.viewObject.currentRoutine]
         } else {
-            $scope.tasks = JSON.parse(localStorage.getItem(localStorageKey));
+            var savedValues = JSON.parse(localStorage.getItem(localStorageKey));
+            $scope.viewObject.currentRoutine = savedValues.currentRoutine;
+            $scope.routines = savedValues.routines;
+            $scope.tasks = $scope.routines[$scope.viewObject.currentRoutine]
             // Reset all values to active
             $scope.tasks.map((task) => { task.active = true; });
         }
+
+        $scope.routineOptions = Object.keys($scope.routines);
 
         let interval = 1000; // 1 second in milliseconds
         let duration;
@@ -88,9 +118,14 @@
             if ($scope.viewObject.editMode) {
                 $scope.viewObject.editText="Save";
             } else {
+                $scope.routines[$scope.viewObject.currentRoutine] = $scope.tasks;
                 let changesPermanent = confirm("Okay to save changes for all future sessions?");
                 if (changesPermanent) {
-                    localStorage.setItem(localStorageKey, JSON.stringify($scope.tasks));
+                    var saveObjectStage = {};
+                    saveObjectStage.currentRoutine = $scope.viewObject.currentRoutine;
+                    saveObjectStage.routines = $scope.routines;
+
+                    localStorage.setItem(localStorageKey, JSON.stringify(saveObjectStage));
                 }
                 $scope.viewObject.editText="Edit";
                 setCurrentTask();
@@ -193,7 +228,13 @@
             $scope.tasks.splice(newIndex,0,movingTask);
         }
 
-
+        $scope.selectRoutine = function() {
+            console.log("Changing routines to" + $scope.viewObject.currentRoutine)
+            $scope.tasks = $scope.routines[$scope.viewObject.currentRoutine]
+            $scope.tasks.map((task) => { task.active = true; });
+            setCurrentTask();
+            $scope.setTimeNow();
+        }
     });
 
 }());
